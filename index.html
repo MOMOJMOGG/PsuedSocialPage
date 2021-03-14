@@ -41,15 +41,16 @@
       <!-- Render Friends List -->
       <div class="col-2">
         <div class="m-1">
-          <div class="card" data-toggle="modal" data-target="#user-modal">
-            <img src="https://randomuser.me/api/portraits/men/88.jpg" class="card-img-top" alt="Fake User" />
-            <div class="card-body">
-              <h5 class="card-title text-center">User Name</h5>
-            </div>
+          <div class="card"">
+            <img src=" https://randomuser.me/api/portraits/men/88.jpg" class="card-img-top" alt="Fake User"
+            data-toggle="modal" data-target="#user-modal" />
+          <div class=" card-body">
+            <h5 class="card-title text-center">User Name</h5>
           </div>
         </div>
       </div>
     </div>
+  </div>
   </div>
   <!-- User Modal -->
   <div class="modal fade" id="user-modal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
@@ -65,16 +66,12 @@
         <div class="modal-body" id="movie-modal-body">
           <div class="row">
             <div class="col-sm-5" id="movie-modal-image">
-              <img src="https://randomuser.me/api/portraits/men/88.jpg" width="200" alt="Fask-user"
+              <img id="user-avatar" src="https://randomuser.me/api/portraits/men/88.jpg" width="200" alt="Fask-user"
                 class="img-fluid rounded mx-auto d-block">
             </div>
             <div class="col-sm-7">
-              <ul>
-                <li>Email: </li>
-                <li>Gender: </li>
-                <li>Age: </li>
-                <li>Region: </li>
-                <li>Birthday: </li>
+              <ul id="user-info">
+                <!-- user information list -->
               </ul>
             </div>
           </div>
