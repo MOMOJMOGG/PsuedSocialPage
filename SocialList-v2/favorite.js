@@ -2,7 +2,7 @@
 const BASE_URL = 'https://lighthouse-user-api.herokuapp.com'
 const INDEX_URL = BASE_URL + '/api/v1/users/'
 
-const friends = []
+const friends = JSON.parse(localStorage.getItem('closeFriends'))  // 收藏清單
 let filteredFriends = []
 let displayFriend = NaN
 const dataPanel = document.querySelector('#data-panel')
@@ -15,6 +15,7 @@ function showUserModal(id) {
   function matchIdFromList(user) {
     return user.id === id
   }
+
   modalBtnReset()
 
   const userName = document.getElementById('movie-modal-title')
@@ -78,31 +79,6 @@ function renderFirendList(data) {
   dataPanel.innerHTML = contentHTML
 }
 
-/*** 加入 收藏清單 ***/
-function addToFavoriteList() {
-  if (displayFriend === NaN) {
-    return
-  }
-
-  function matchIdFromList(user) {
-    return user.id === displayFriend
-  }
-
-  const targetUser = friends.find(matchIdFromList)
-
-  // 從 local Storage 取得 收藏清單 資料
-  const list = JSON.parse(localStorage.getItem('closeFriends')) || []
-
-  // 錯誤處理 : 重複收藏
-  if (list.some(matchIdFromList)) {
-    return alert('此用戶已在收藏清單中！')
-  }
-
-  // 加入 收藏清單 並 更新 local Storage
-  list.push(targetUser)
-  localStorage.setItem('closeFriends', JSON.stringify(list))
-}
-
 /*** 刪除 收藏清單 ***/
 function RemoveFromFavoriteList() {
   if (displayFriend === NaN) {
@@ -116,21 +92,22 @@ function RemoveFromFavoriteList() {
   // 從 收藏清單 移除用戶
   const list = JSON.parse(localStorage.getItem('closeFriends')) || []
 
-  const friendIndex = list.findIndex(matchIdFromList)
-
+  let friendIndex = list.findIndex(matchIdFromList)
   list.splice(friendIndex, 1)
+  friendIndex = friends.findIndex(matchIdFromList)
+  friends.splice(friendIndex, 1)
 
   localStorage.setItem('closeFriends', JSON.stringify(list))
+  $('.modal').modal('toggle')
+  renderFirendList(friends)
 }
 // ***************************************************************************** Event Listener
 /*** 監聽 data panel ***/
 dataPanel.addEventListener('click', function onPanelClicked(event) {
   if (event.target.tagName === "IMG") {
     const targetId = Number(event.target.dataset.id)
-    displayFriend = targetId
-    console.log(displayFriend)
     showUserModal(targetId)
-
+    displayFriend = targetId
   }
 })
 
@@ -170,11 +147,4 @@ modal.addEventListener('click', (event) => {
   }
 })
 
-// 請求資料
-axios
-  .get(INDEX_URL)
-  .then((response) => {
-    friends.push(...response.data.results)
-    renderFirendList(friends)
-  })
-  .catch((err) => console.log(err))
+renderFirendList(friends)
