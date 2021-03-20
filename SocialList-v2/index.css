@@ -1,7 +1,16 @@
+.card {
+  height: 250px;
+  border-radius: 10px;
+  align-content: center;
+}
+
 .card-title {
   font-size: 16px;
 }
 
 .card-img-top {
   cursor: pointer;
+  width: 90%;
+  margin: 10px auto 0;
+  border-radius: 10px;
 }
