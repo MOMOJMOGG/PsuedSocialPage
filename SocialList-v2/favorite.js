@@ -3,12 +3,9 @@ const BASE_URL = 'https://lighthouse-user-api.herokuapp.com'
 const INDEX_URL = BASE_URL + '/api/v1/users/'
 
 const friends = JSON.parse(localStorage.getItem('closeFriends'))  // 收藏清單
-let filteredFriends = []
 let displayFriend = NaN
 const DATA_PER_PAGE = 12
 const dataPanel = document.querySelector('#data-panel')
-const searchInput = document.getElementById('nav-searching-input')
-const searchBtn = document.getElementById('nav-searching-btn')
 const modal = document.querySelector('.modal')
 const paginator = document.querySelector('#paginator')
 // ***************************************************************************** Function
@@ -118,14 +115,11 @@ function RemoveFromFavoriteList() {
 
 /*** 切割部分 資料 ***/
 function getDataByPage(page) {
-  // 判斷要取 搜尋清單 或是 總清單
-  const targetList = filteredFriends.length ? filteredFriends : friends
-
   // 計算起始 index 
   const startIndex = (page - 1) * DATA_PER_PAGE
 
   // 回傳切割後的新陣列
-  return targetList.slice(startIndex, startIndex + DATA_PER_PAGE)
+  return friends.slice(startIndex, startIndex + DATA_PER_PAGE)
 }
 
 /*** 更新 分頁頁數 畫面 ***/
@@ -154,30 +148,6 @@ dataPanel.addEventListener('click', function onPanelClicked(event) {
     showUserModal(targetId)
     displayFriend = targetId
   }
-})
-
-/*** 監聽 searching 按鈕 ***/
-searchBtn.addEventListener('click', function onSearchBtnClicked(event) {
-  // 終止元件的預設行為
-  function findFriend(friend, keyword) {
-    const name = `${friend.name + ' ' + friend.surname}`.toLowerCase()
-    return name.includes(keyword)
-  }
-  event.preventDefault()
-
-  // 取得搜尋關鍵字
-  const keyword = searchInput.value.trim().toLowerCase()
-
-  // 條件篩選
-  filteredFriends = friends.filter((friend) => findFriend(friend, keyword))
-  // 錯誤處理 : 無符合條件的結果
-  if (filteredFriends.length === 0) {
-    return alert(`您輸入的關鍵字 : ${keyword} 沒有符合條件的朋友!`)
-  }
-
-  // 重新更新 分頁 與 電影清單 至畫面
-  renderPaginator(filteredFriends.length)
-  renderFirendList(getDataByPage(1))
 })
 
 /*** 監聽 Modal 按鈕 ***/
