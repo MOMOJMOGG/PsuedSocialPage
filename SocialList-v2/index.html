@@ -43,6 +43,12 @@
       <!-- 由 JS 產生 -->
     </div>
   </div>
+  <!-- paginator -->
+  <nav aria-label="Page navigation">
+    <ul class="pagination justify-content-center" id="paginator">
+      <!-- 由 JS 產生 -->
+    </ul>
+  </nav>
   <!-- User Modal -->
   <div class="modal fade" id="user-modal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
     aria-hidden="true">
@@ -78,6 +84,27 @@
             Close
           </button>
         </div>
+      </div>
+    </div>
+  </div>
+  <!-- Toasts -->
+  <!-- Flexbox container for aligning the toasts -->
+  <div aria-live="polite" aria-atomic="true" class="d-flex justify-flex-end align-items-center"
+    style="min-height: 200px;">
+
+    <!-- Then put toasts within -->
+    <div class="toast" id="toast-message" role="alert" aria-live="assertive" aria-atomic="true" data-delay="3000"
+      style="position: absolute; bottom: 10px; right: 10px;">
+      <div class="toast-header">
+        <img src="..." class="rounded mr-2" alt="...">
+        <strong class="mr-auto">Bootstrap</strong>
+        <small>11 mins ago</small>
+        <button type="button" class="ml-2 mb-1 close" data-dismiss="toast" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="toast-body">
+        Hello, world! This is a toast message.
       </div>
     </div>
   </div>
