@@ -2,7 +2,7 @@
 const BASE_URL = 'https://lighthouse-user-api.herokuapp.com'
 const INDEX_URL = BASE_URL + '/api/v1/users/'
 
-const MOVIES_PER_PAGE = 12
+const DATA_PER_PAGE = 12
 const friends = []
 let filteredFriends = []
 let displayFriend = NaN
@@ -149,6 +149,7 @@ function RemoveFromFavoriteList() {
   list.splice(friendIndex, 1)
 
   localStorage.setItem('closeFriends', JSON.stringify(list))
+
   // 確認 停留頁面
   const currentPage = JSON.parse(localStorage.getItem('homeCurrentPage'))
   renderFirendList(getDataByPage(currentPage))
@@ -160,10 +161,10 @@ function getDataByPage(page) {
   const targetList = filteredFriends.length ? filteredFriends : friends
 
   // 計算起始 index 
-  const startIndex = (page - 1) * MOVIES_PER_PAGE
+  const startIndex = (page - 1) * DATA_PER_PAGE
 
   // 回傳切割後的新陣列
-  return targetList.slice(startIndex, startIndex + MOVIES_PER_PAGE)
+  return targetList.slice(startIndex, startIndex + DATA_PER_PAGE)
 }
 
 /*** 更新 分頁頁數 畫面 ***/
@@ -175,7 +176,7 @@ function renderPaginator(amount) {
   }
 
   // 計算總頁數
-  const numberOfPages = Math.ceil(amount / MOVIES_PER_PAGE)
+  const numberOfPages = Math.ceil(amount / DATA_PER_PAGE)
 
   // 製作分頁
   let contentHTML = ''
@@ -196,11 +197,12 @@ dataPanel.addEventListener('click', function onPanelClicked(event) {
 
 /*** 監聽 searching 按鈕 ***/
 searchBtn.addEventListener('click', function onSearchBtnClicked(event) {
-  // 終止元件的預設行為
   function findFriend(friend, keyword) {
     const name = `${friend.name + ' ' + friend.surname}`.toLowerCase()
     return name.includes(keyword)
   }
+
+  // 終止元件的預設行為
   event.preventDefault()
 
   // 取得搜尋關鍵字

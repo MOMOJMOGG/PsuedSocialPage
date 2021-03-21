@@ -5,10 +5,12 @@ const INDEX_URL = BASE_URL + '/api/v1/users/'
 const friends = JSON.parse(localStorage.getItem('closeFriends'))  // 收藏清單
 let filteredFriends = []
 let displayFriend = NaN
+const DATA_PER_PAGE = 12
 const dataPanel = document.querySelector('#data-panel')
 const searchInput = document.getElementById('nav-searching-input')
 const searchBtn = document.getElementById('nav-searching-btn')
 const modal = document.querySelector('.modal')
+const paginator = document.querySelector('#paginator')
 // ***************************************************************************** Function
 /*** Modal 顯示 ***/
 function showUserModal(id) {
@@ -99,7 +101,50 @@ function RemoveFromFavoriteList() {
 
   localStorage.setItem('closeFriends', JSON.stringify(list))
   $('.modal').modal('toggle')
-  renderFirendList(friends)
+
+  // 確認刪除停留頁面
+  const currentPage = JSON.parse(localStorage.getItem('favoriteCurrentPage'))
+  const totalPage = Math.ceil(friends.length / DATA_PER_PAGE)
+  let page = currentPage
+  if (totalPage < currentPage) {
+    page = totalPage
+    localStorage.setItem('favoriteCurrentPage', JSON.stringify(page))
+  }
+
+  //更新頁面
+  renderPaginator(friends.length)
+  renderFirendList(getDataByPage(page))
+}
+
+/*** 切割部分 資料 ***/
+function getDataByPage(page) {
+  // 判斷要取 搜尋清單 或是 總清單
+  const targetList = filteredFriends.length ? filteredFriends : friends
+
+  // 計算起始 index 
+  const startIndex = (page - 1) * DATA_PER_PAGE
+
+  // 回傳切割後的新陣列
+  return targetList.slice(startIndex, startIndex + DATA_PER_PAGE)
+}
+
+/*** 更新 分頁頁數 畫面 ***/
+function renderPaginator(amount) {
+  // 分頁數若為0, 不顯示分頁
+  if (amount === 0) {
+    paginator.innerHTML = ""
+    return
+  }
+
+  //計算總頁數
+  const numberOfPages = Math.ceil(amount / DATA_PER_PAGE)
+
+  //製作分頁 
+  let contentHTML = ''
+  for (let page = 1; page <= numberOfPages; page++) {
+    contentHTML += `<li class="page-item"><a class="page-link" href="#" data-page="${page}">${page}</a></li>`
+  }
+  paginator.innerHTML = contentHTML
 }
 // ***************************************************************************** Event Listener
 /*** 監聽 data panel ***/
@@ -130,7 +175,9 @@ searchBtn.addEventListener('click', function onSearchBtnClicked(event) {
     return alert(`您輸入的關鍵字 : ${keyword} 沒有符合條件的朋友!`)
   }
 
-  renderFirendList(filteredFriends)
+  // 重新更新 分頁 與 電影清單 至畫面
+  renderPaginator(filteredFriends.length)
+  renderFirendList(getDataByPage(1))
 })
 
 /*** 監聽 Modal 按鈕 ***/
@@ -147,4 +194,22 @@ modal.addEventListener('click', (event) => {
   }
 })
 
-renderFirendList(friends)
+/*** 監聽分頁 按鈕 事件  ***/
+paginator.addEventListener('click', function onPaginatorClicked(event) {
+  // 錯誤處理 : 如果被點擊的不是 a 標籤 則 跳出函式
+  if (event.target.tagName !== 'A') return
+
+  //透過 dataset 取得被點擊的頁數
+  const page = Number(event.target.dataset.page)
+
+  // 暫存當下頁數至 local storage
+  localStorage.setItem('favoriteCurrentPage', JSON.stringify(page))
+
+  //更新畫面
+  renderFirendList(getDataByPage(page))
+})
+
+// 初始更新畫面
+renderPaginator(friends.length)
+renderFirendList(getDataByPage(1))
+localStorage.setItem('favoriteCurrentPage', JSON.stringify(1))
