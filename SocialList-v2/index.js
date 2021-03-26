@@ -32,11 +32,11 @@ function showUserModal(id) {
   userName.innerText = `${targetUser.name + ' ' + targetUser.surname}`
   userAvatar.src = targetUser.avatar
   const contentHTML = `
-      <li>Email: ${targetUser.email}</li>
-      <li>Gender: ${targetUser.gender}</li>
-      <li>Age: ${targetUser.age}</li>
-      <li>Region: ${targetUser.region}</li>
-      <li>Birthday: ${targetUser.birthday}</li>
+      <li class="list-group-item"><i class="fas fa-envelope fa-lg"></i>  Email : ${targetUser.email}</li>
+      <li class="list-group-item"><i class="fas fa-male fa-lg"></i><i class="fas fa-female fa-lg"></i>  Gender: ${targetUser.gender}</li>
+      <li class="list-group-item"><i class="fas fa-calendar-plus fa-lg"></i>  Age : ${targetUser.age}</li>
+      <li class="list-group-item"><i class="far fa-flag fa-lg"></i>  Region : ${targetUser.region}</li>
+      <li class="list-group-item"><i class="fas fa-birthday-cake fa-lg"></i>  Birthday : ${targetUser.birthday}</li>
   `
 
   userInfo.innerHTML = contentHTML
