@@ -11,6 +11,8 @@ const searchInput = document.getElementById('nav-searching-input')
 const searchBtn = document.getElementById('nav-searching-btn')
 const modal = document.querySelector('.modal')
 const paginator = document.getElementById('paginator')
+const modalBtnLeft = document.getElementById('modal-btn-left')
+const modalBtnRight = document.getElementById('modal-btn-right')
 // ***************************************************************************** Function
 /*** Modal 顯示 ***/
 function showUserModal(id) {
@@ -19,11 +21,13 @@ function showUserModal(id) {
   }
   modalBtnReset()
 
+  // 取得 顯示資料
+  const targetUser = friends.find(matchIdFromList)
+
+  // 更新 Modal 
   const userName = document.getElementById('movie-modal-title')
   const userAvatar = document.querySelector('#user-avatar')
   const userInfo = document.querySelector('#user-info')
-
-  const targetUser = friends.find(matchIdFromList)
 
   userName.innerText = `${targetUser.name + ' ' + targetUser.surname}`
   userAvatar.src = targetUser.avatar
@@ -57,6 +61,40 @@ function modalBtnReset() {
 /*** Modal 按鈕關閉 清空設定 ***/
 $('.modal').on('hidden.bs.modal', (event) => {
   displayFriend = NaN
+})
+
+/*** Modal 左按鈕 ***/
+$('#modal-btn-left').on('click', (event) => {
+  let currentIndex = friends.findIndex((user) => user.id === displayFriend)
+  currentIndex = (currentIndex - 1) > 0 ? (currentIndex - 1) : 0
+  const targetUser = friends[currentIndex]
+  displayFriend = targetUser.id
+  showUserModal(displayFriend)
+
+  // 確認 停留頁面
+  let currentPage = JSON.parse(localStorage.getItem('homeCurrentPage'))
+  const userPage = Math.ceil((currentIndex + 1) / DATA_PER_PAGE)
+  if (userPage !== currentPage) {
+    localStorage.setItem('homeCurrentPage', JSON.stringify(userPage))
+    renderFirendList(getDataByPage(userPage))
+  }
+})
+
+/*** Modal 右按鈕 ***/
+$('#modal-btn-right').on('click', (event) => {
+  let currentIndex = friends.findIndex((user) => user.id === displayFriend)
+  currentIndex = (currentIndex + 1) < friends.length ? (currentIndex + 1) : friends.length - 1
+  const targetUser = friends[currentIndex]
+  displayFriend = targetUser.id
+  showUserModal(displayFriend)
+
+  // 確認 停留頁面
+  let currentPage = JSON.parse(localStorage.getItem('homeCurrentPage'))
+  const userPage = Math.ceil((currentIndex + 1) / DATA_PER_PAGE)
+  if (userPage !== currentPage) {
+    localStorage.setItem('homeCurrentPage', JSON.stringify(userPage))
+    renderFirendList(getDataByPage(userPage))
+  }
 })
 
 /*** 取得 收藏id清單 ***/

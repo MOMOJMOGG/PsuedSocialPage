@@ -73,16 +73,22 @@
             </div>
           </div>
         </div>
-        <div class="modal-footer">
-          <button id="modal-btn-remove-favorite" type="button" class="btn btn-outline-danger" style="display: none">
-            Remove From Favorite
-          </button>
-          <button id="modal-btn-add-favorite" type="button" class="btn btn-danger">
-            Add To Favorite
-          </button>
-          <button type="button" class="btn btn-secondary" data-dismiss="modal">
-            Close
-          </button>
+        <div class="modal-footer d-flex justify-content-between">
+          <a id="modal-btn-left" class="btn btn-primary" href="#">
+            <i class="fas fa-arrow-alt-circle-left"></i></a>
+          <div class="btn-group">
+            <button id="modal-btn-remove-favorite" type="button" class="btn btn-outline-danger" style="display: none">
+              Remove From Favorite
+            </button>
+            <button id="modal-btn-add-favorite" type="button" class="btn btn-danger">
+              Add To Favorite
+            </button>
+            <button type="button" class="btn btn-secondary ml-2" data-dismiss="modal">
+              Close
+            </button>
+          </div>
+          <a id="modal-btn-right" class="btn btn-primary" href="#">
+            <i class="fas fa-arrow-alt-circle-right"></i></a>
         </div>
       </div>
     </div>
@@ -122,6 +128,8 @@
   <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/js/bootstrap.min.js"
     integrity="sha384-OgVRvuATP1z7JjHLkuOU7Xw704+h835Lr+6QL9UvYjZE3Ipu6Tp75j7Bh/kR0JKI"
     crossorigin="anonymous"></script>
+  <!-- fontawesome -->
+  <script src="https://kit.fontawesome.com/4df5f7252c.js" crossorigin="anonymous"></script>
   <!-- index.js -->
   <script src="index.js"></script>
 </body>
